@@ -71,16 +71,17 @@ const gameBoard = (function() {
 })();
 
 function game() {
-    
     gameBoard.reset();
     const boxes = document.getElementsByClassName("box");
     const turnBox = document.getElementById('turn');
     turnBox.innerText = 'Player 1 Turn (X)';
-    
+    let foundWinner = false;
     for(let i = 0; i < boxes.length; i++) {
+        boxes[i].textContent = '';
+        boxes[i].classList.remove('taken');
         boxes[i].addEventListener('click' ,()=>  {
         
-            if(player1.myTurn === true && !boxes[i].classList.contains('taken')) {
+            if(player1.myTurn === true && !boxes[i].classList.contains('taken') && foundWinner === false) {
                 boxes[i].textContent = 'X';
                 let choice = boxes[i].id;
                 gameBoard.replace(player1.marker, choice);
@@ -88,7 +89,7 @@ function game() {
                 player2.myTurn = true;
                 turnBox.textContent = 'Player 2 Turn (O)'
             }
-            else if (player2.myTurn === true && !boxes[i].classList.contains('taken')) {
+            else if (player2.myTurn === true && !boxes[i].classList.contains('taken') && foundWinner === false) {
                 let choice = boxes[i].id;
                 boxes[i].textContent = 'O';
                 gameBoard.replace(player2.marker, choice);
@@ -100,11 +101,18 @@ function game() {
              
             if(gameBoard.checkBoard() != undefined) {
                 let winner = gameBoard.checkBoard();
+                foundWinner = true;
                 turnBox.textContent = 'Winner: ' + winner;
             }
+            console.log(foundWinner);
             console.log(gameBoard.array);
         })
     }
     
 }
 game();
+const resetButton = document.getElementById('resetButton');
+resetButton.addEventListener('click', ()=> {
+    game();
+    
+})
