@@ -61,31 +61,50 @@ const gameBoard = (function() {
         this.array =
     [['a1' ,'a2', 'a3'],
      ['b1', 'b2', 'b3'],
-     ['c1', 'c2', 'c3']]
-     }
+     ['c1', 'c2', 'c3']],
+     player1.myTurn = true,
+     player2.myTurn = false
+     },
+     
     }
     return object;
 })();
 
 function game() {
-    let winner = 'undefined'
-    console.log(gameBoard.array);
-    while(winner != 'X' && winner != 'O' && winner != 'Tie') {
-        if (player1.myTurn === true) {
-            let choice = prompt(`${player1.name}: Your Turn`);
-            gameBoard.replace(player1.marker, choice);
-            player1.myTurn = false;
-            player2.myTurn = true;
-        } else if (player2.myTurn === true) {
-            let choice = prompt(`${player2.name}: Your Turn`);
-            gameBoard.replace(player2.marker, choice);
-            player2.myTurn = false;
-            player1.myTurn = true;
-        }
-        winner = gameBoard.checkBoard();
-        console.log(gameBoard.array);
+    
+    gameBoard.reset();
+    const boxes = document.getElementsByClassName("box");
+    const turnBox = document.getElementById('turn');
+    turnBox.innerText = 'Player 1 Turn (X)';
+    
+    for(let i = 0; i < boxes.length; i++) {
+        boxes[i].addEventListener('click' ,()=>  {
+        
+            if(player1.myTurn === true && !boxes[i].classList.contains('taken')) {
+                boxes[i].textContent = 'X';
+                let choice = boxes[i].id;
+                gameBoard.replace(player1.marker, choice);
+                player1.myTurn = false;
+                player2.myTurn = true;
+                turnBox.textContent = 'Player 2 Turn (O)'
+            }
+            else if (player2.myTurn === true && !boxes[i].classList.contains('taken')) {
+                let choice = boxes[i].id;
+                boxes[i].textContent = 'O';
+                gameBoard.replace(player2.marker, choice);
+                player2.myTurn = false;
+                player1.myTurn = true;
+                turnBox.textContent = 'Player 1 Turn (X)'
+            }
+            boxes[i].classList.add('taken');
+             
+            if(gameBoard.checkBoard() != undefined) {
+                let winner = gameBoard.checkBoard();
+                turnBox.textContent = 'Winner: ' + winner;
+            }
+            console.log(gameBoard.array);
+        })
     }
-    console.log("Winner: " + gameBoard.checkBoard());
+    
 }
-
 game();

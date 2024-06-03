@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 100vh;
+}
+
+.container {
+    display: grid;
+    grid-template: 1fr 1fr 1fr/ 1fr 1fr 1fr ;
+    
+
+}
+.container div {
+    border: 2px solid black;
+    border-top: none;
+    border-left: none;
+    width: 10rem;
+    height: 10rem;
+}
+#a3 , #b3, #c3 {
+    border-right: none;
+}
+#c1, #c2, #c3 {
+    border-bottom: none;
+}
+.gameKeeping, #turn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    width: 400px;
+}
+#turn {
+    font-size: 30px;
+}
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+}
