@@ -14,6 +14,8 @@ const gameBoard = (function() {
     [['a1' ,'a2', 'a3'],
      ['b1', 'b2', 'b3'],
      ['c1', 'c2', 'c3']],
+     
+     foundWinner: false,
 
      replace(player, gamePiece) {
         for (let i = 0; i < 3; i++) {
@@ -58,10 +60,12 @@ const gameBoard = (function() {
         return winner;
      },
      reset() {
+        
         this.array =
     [['a1' ,'a2', 'a3'],
      ['b1', 'b2', 'b3'],
      ['c1', 'c2', 'c3']],
+     this.foundWinner = false;
      player1.myTurn = true,
      player2.myTurn = false
      },
@@ -75,13 +79,12 @@ function game() {
     const boxes = document.getElementsByClassName("box");
     const turnBox = document.getElementById('turn');
     turnBox.innerText = 'Player 1 Turn (X)';
-    let foundWinner = false;
     for(let i = 0; i < boxes.length; i++) {
         boxes[i].textContent = '';
         boxes[i].classList.remove('taken');
         boxes[i].addEventListener('click' ,()=>  {
         
-            if(player1.myTurn === true && !boxes[i].classList.contains('taken') && foundWinner === false) {
+            if(player1.myTurn === true && !boxes[i].classList.contains('taken') && gameBoard.foundWinner === false) {
                 boxes[i].textContent = 'X';
                 let choice = boxes[i].id;
                 gameBoard.replace(player1.marker, choice);
@@ -89,7 +92,7 @@ function game() {
                 player2.myTurn = true;
                 turnBox.textContent = 'Player 2 Turn (O)'
             }
-            else if (player2.myTurn === true && !boxes[i].classList.contains('taken') && foundWinner === false) {
+            else if (player2.myTurn === true && !boxes[i].classList.contains('taken') && gameBoard.foundWinner === false) {
                 let choice = boxes[i].id;
                 boxes[i].textContent = 'O';
                 gameBoard.replace(player2.marker, choice);
@@ -101,18 +104,19 @@ function game() {
              
             if(gameBoard.checkBoard() != undefined) {
                 let winner = gameBoard.checkBoard();
-                foundWinner = true;
+                gameBoard.foundWinner = true;
                 turnBox.textContent = 'Winner: ' + winner;
             }
-            console.log(foundWinner);
+            console.log(gameBoard.foundWinner);
             console.log(gameBoard.array);
         })
     }
     
 }
-game();
+
 const resetButton = document.getElementById('resetButton');
 resetButton.addEventListener('click', ()=> {
     game();
     
 })
+game();
